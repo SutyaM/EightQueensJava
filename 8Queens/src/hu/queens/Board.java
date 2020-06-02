@@ -1,5 +1,7 @@
 package hu.queens;
 
+import java.util.Optional;
+
 public class Board {
 
     int row;
@@ -20,45 +22,45 @@ public class Board {
         }
     }
 
-    public boolean checkForQueen(int row, int col) {
+    public Optional<Boolean> checkForQueen(int row, int col) {
 
         for (int i = 0; i < this.board.length; i++) {
             if (this.board[i][col] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
 
         for (int j = 0; j < this.board.length; j++) {
             if (this.board[row][j] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
 
         for (int i = row, j = col; i < this.board.length && j < this.board.length; i++, j++) {
             if (this.board[i][j] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
 
         for (int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
             if (this.board[i][j] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
 
         for (int i = row, j = col; i >= 0 && j < this.board.length; i--, j++) {
             if (this.board[i][j] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
 
         for (int i = row, j = col; i < this.board.length && j >= 0; i++, j--) {
             if (this.board[i][j] instanceof Queen) {
-                return false;
+                return Optional.of(false);
             }
         }
         
-        return true;
+        return Optional.of(true);
     }
 
     public boolean placeQueen (int number) {
@@ -66,7 +68,8 @@ public class Board {
             return true;
         } else {
             for (int i = 0; i < this.col; i++) {
-                if (checkForQueen(i, number)) {
+                boolean bool = checkForQueen(i, number).orElse(null);
+                if (bool) {
                     this.board[i][number] = new Queen(i, number);
                    if (placeQueen(number + 1)) {
                        return true;
